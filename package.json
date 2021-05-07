@@ -23,6 +23,7 @@
   "homepage": "https://github.com/mp2626/Team-Profile-Generator#readme",
   "dependencies": {
     "D": "^1.0.0",
+    "inquirer": "^8.0.0",
     "jest": "^26.6.3"
   }
 }
