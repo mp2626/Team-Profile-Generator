@@ -5,3 +5,10 @@ const Employee = require("./lib/employee")
 const test = new Employee("mike")
 
 test.print()
+
+
+
+
+// async function init() {
+//     await 
+// }
