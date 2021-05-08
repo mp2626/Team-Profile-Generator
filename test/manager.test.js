@@ -26,9 +26,9 @@ describe('Manager', () => {
     })
 
     it('returns Manager office number', () => {
-        const email = 'mike@mp.com';
-        const newManager = new Manager('mike', 1, email);
-        expect(newManager.email).toBe('mike@mp.com');
+        const officeNum = '12345';
+        const newManager = new Manager('mike', 1, 'mike@mp.com', officeNum);
+        expect(newManager.officeNum).toBe('12345');
     })
 
     it('getName() returns a name', () => {
@@ -47,6 +47,12 @@ describe('Manager', () => {
         const email = 'mike@mp.com';
         const newManager = new Manager('test', 1, email);
         expect(newManager.getEmail()).toBe('mike@mp.com');
+    })
+
+    it('getOfficeNumber() returns a office number', () => {
+        const officeNum = '12345';
+        const newManager = new Manager('test', 1, 'mike@mp.com', officeNum);
+        expect(newManager.getOfficeNumber()).toBe('12345');
     })
 
     it('getRole() returns a role', () => {
