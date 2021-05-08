@@ -1,0 +1,40 @@
+:root {
+    --backgound: black;
+    --text: grey;
+    --hearder: #194991;
+    --orangeCard: rgb(252, 114, 51, 0.6);
+    --orangeCardOP: rgb(252, 114, 51, 0);
+    --orange:#fc7233;
+   }
+   
+   
+   body {
+       background-image: url(../images/team.jpg);
+       background-repeat:no-repeat;
+       background-size:cover;
+   }
+
+   h1 {
+    padding-top: 3rem;
+    color: var(--text);
+    font-size: 5rem;
+   }
+   
+   h2 {
+       font-size: 30px;
+   }
+   
+   .jumbotron {
+       background-color: var(--orangeCardOP);
+   }
+   
+   .card {
+       background-color: var(--orangeCard);
+       border: 1.5px solid var(--orange);
+       color: var(--text);
+       margin: 1%;
+   }
+   
+   .card h1 {
+       font-size: 35px;
+   }
