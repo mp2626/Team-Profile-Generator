@@ -25,10 +25,10 @@ describe('Engineer', () => {
         expect(newEngineer.email).toBe('mike@mp.com');
     })
 
-    it('returns Engineer office number', () => {
-        const officeNum = '12345';
-        const newEngineer = new Engineer('mike', 1, 'mike@mp.com', officeNum);
-        expect(newEngineer.officeNum).toBe('12345');
+    it('returns Engineer github username', () => {
+        const gitHub = 'mp2626';
+        const newEngineer = new Engineer('mike', 1, 'mike@mp.com', gitHub);
+        expect(newEngineer.gitName).toBe('mp2626');
     })
 
     it('getName() returns a name', () => {
@@ -49,10 +49,10 @@ describe('Engineer', () => {
         expect(newEngineer.getEmail()).toBe('mike@mp.com');
     })
 
-    it('getOfficeNumber() returns a office number', () => {
-        const officeNum = '12345';
-        const newEngineer = new Engineer('test', 1, 'mike@mp.com', officeNum);
-        expect(newEngineer.getOfficeNumber()).toBe('12345');
+    it('getGitHub() returns a GitHub Username', () => {
+        const gitHub = 'mp2626';
+        const newEngineer = new Engineer('test', 1, 'mike@mp.com', gitHub);
+        expect(newEngineer.getGitHub()).toBe('mp2626');
     })
 
     it('getRole() returns a role', () => {
