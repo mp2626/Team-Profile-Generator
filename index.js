@@ -6,8 +6,6 @@ const Intern = require("./lib/intern");
 
 let teamComplete = false;
 
-
-
 const commonPrompt = () => {
     return inquirer
         .prompt([
@@ -19,7 +17,7 @@ const commonPrompt = () => {
             {
                 type: "input",
                 message: "Please enter your ID:",
-                name: "ID"
+                name: "id"
             },
 
             {
@@ -53,14 +51,14 @@ async function buildTeamArray() {
         console.log(choice.role);
         if (choice.role !== "Complete Team") {
             const commonDetails = await commonPrompt()
-            const additionalDetails = ""
+            let additionalDetails = ""
             switch (choice.role) {
                 case "Manager":
                     additionalDetails = await inquirer.prompt([
                         {
                             type: "input",
                             message: "Please enter your contact number:",
-                            name: "number"
+                            name: "roleInfo"
                         },
                     ])
                     break
@@ -69,7 +67,7 @@ async function buildTeamArray() {
                         {
                             type: "input",
                             message: "Please enter your gitHub:",
-                            name: "gitHub"
+                            name: "roleInfo"
                         },
                     ])
                     break
@@ -78,30 +76,63 @@ async function buildTeamArray() {
                         {
                             type: "input",
                             message: "Please enter your school details:",
-                            name: "school"
+                            name: "roleInfo"
                         },
                     ])
                     break
-                case "Complete":
-
             }
+
             const { name, id, email, roleInfo } = concatEmployeeInfo(commonDetails, additionalDetails);
-            const newManager = new Manager(name, id, email, roleInfo);
-            const newEngineer = new Engineer(name, id, email, roleInfo);
-            const newIntern = new Intern(name, id, email, roleInfo);
-            console.log(newManager.getName())
-            const managerCard = `
+            const test = concatEmployeeInfo(commonDetails, additionalDetails)
+            console.log(test);
+            console.log(id);
+            console.log(roleInfo);
+            let teamMemberCard = '';
+
+            switch (choice.role) {
+                case "Manager":
+                    const newManager = new Manager(name, id, email, roleInfo);
+                    teamMemberCard = `
                     <div class="card col-md-11 col-lg-2">
-                        <h1 class="card-header">${newManager.getRole()}/h1>
-                     <div class="card-body">
+                        <h1 class="card-header">${newManager.getRole()} /h1>
+                    < div class="card-body" >
                         <h2>Name:${newManager.getName()} </h2>
                         <h2>ID:${newManager.getId()}</h2>
                         <h2>Email:${newManager.getEmail()}</h2>
                         <h2>Contact Number:${newManager.getOfficeNumber()}</h2>
-                        </div>
+                        </div >
                     `
-        }
-        else {
+                    break
+                case "Engineer":
+                    const newEngineer = new Engineer(name, id, email, roleInfo);
+                    teamMemberCard = `
+                    <div class="card col-md-11 col-lg-2">
+                        <h1 class="card-header">${newEngineer.getRole()} /h1>
+                    < div class="card-body" >
+                        <h2>Name:${newEngineer.getName()} </h2>
+                        <h2>ID:${newEngineer.getId()}</h2>
+                        <h2>Email:${newEngineer.getEmail()}</h2>
+                        <h2>GitHub Username:${newEngineer.getGitHub()}</h2>
+                        </div >
+                    `
+                    break
+                case "Intern":
+                    const newIntern = new Intern(name, id, email, roleInfo);
+                    teamMemberCard = `
+                    <div class="card col-md-11 col-lg-2">
+                        <h1 class="card-header">${newIntern.getRole()} /h1>
+                    < div class="card-body" >
+                        <h2>Name:${newIntern.getName()} </h2>
+                        <h2>ID:${newIntern.getId()}</h2>
+                        <h2>Email:${newIntern.getEmail()}</h2>
+                        <h2>School:${newIntern.getSchool()}</h2>
+                        </div >
+                    `
+                    break
+            }
+
+            console.log(teamMemberCard);
+        } else {
             teamComplete = true;
             console.log("team complete")
         }
@@ -111,10 +142,6 @@ async function buildTeamArray() {
 async function init() {
     try {
         await buildTeamArray();
-        // const manager = await managerPrompt();
-        // employees.push({ 'Manager': manager });
-        // console.log(manager);
-        // buildTeamArray();
     } catch (e) {
         console.log(e);
     }
