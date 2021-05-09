@@ -1,11 +1,11 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const Employee = require("./lib/employee");
+const Manager = require("./lib/manager");
 
-let employees = [];
 let teamComplete = false;
 
-const managerPrompt = () => {
+const commonPrompt = () => {
     return inquirer
         .prompt([
             {
@@ -24,11 +24,6 @@ const managerPrompt = () => {
                 message: "Please enter your email address:",
                 name: "email"
             },
-            {
-                type: "input",
-                message: "Please enter your contact number:",
-                name: "email"
-            },
         ])
 }
 
@@ -39,17 +34,39 @@ const teamMemberPrompt = () => {
                 type: "list",
                 name: "role",
                 message: "Please select your next team member to create, or finalise your team by selecting complete team",
-                choices: ["Engineer", "Intern", "Complete Team"]
+                choices: ["Manager", "Engineer", "Intern", "Complete Team"]
             }
         ])
+}
+
+function concatEmployeeInfo(dataOne, dataTwo) {
+    return Object.assign(dataOne, dataTwo);
 }
 
 async function buildTeamArray() {
 
     while (teamComplete === false) {
         let choice = await teamMemberPrompt();
-        if (choice !== "Complete Team") {
-            console.log("team member")
+        console.log(choice.role);
+        if (choice.role !== "Complete Team") {
+            switch (choice.role) {
+                case "Manager":
+                    const manager = await commonPrompt()
+                    const managerDetails = await inquirer.prompt([
+                        {
+                            type: "input",
+                            message: "Please enter your contact number:",
+                            name: "number"
+                        },
+                    ])
+                    let managerComplete = concatEmployeeInfo(manager, managerDetails);
+                    console.log(managerComplete)
+                    break
+                case "Engineer":
+                case "Intern":
+                case "Complete":
+
+            }
         }
         else {
             teamComplete = true;
@@ -102,10 +119,11 @@ async function buildTeamArray() {
 
 async function init() {
     try {
-        const manager = await managerPrompt();
-        employees.push({ 'Manager': manager });
-        console.log(manager);
-        buildTeamArray();
+        await buildTeamArray();
+        // const manager = await managerPrompt();
+        // employees.push({ 'Manager': manager });
+        // console.log(manager);
+        // buildTeamArray();
     } catch (e) {
         console.log(e);
     }
