@@ -34,7 +34,7 @@ const teamMemberPrompt = () => {
             {
                 type: "list",
                 name: "role",
-                message: "Please select your next team member to create, or finalise your team by selecting complete team",
+                message: "Please select a team member type to create, or finalise your team by selecting complete team",
                 choices: ["Manager", "Engineer", "Intern", "Complete Team"]
             }
         ])
@@ -48,7 +48,6 @@ async function buildTeamArray() {
 
     while (teamComplete === false) {
         let choice = await teamMemberPrompt();
-        console.log(choice.role);
         if (choice.role !== "Complete Team") {
             const commonDetails = await commonPrompt()
             let additionalDetails = ""
@@ -83,10 +82,6 @@ async function buildTeamArray() {
             }
 
             const { name, id, email, roleInfo } = concatEmployeeInfo(commonDetails, additionalDetails);
-            const test = concatEmployeeInfo(commonDetails, additionalDetails)
-            console.log(test);
-            console.log(id);
-            console.log(roleInfo);
             let teamMemberCard = '';
 
             switch (choice.role) {
@@ -132,9 +127,51 @@ async function buildTeamArray() {
             }
 
             console.log(teamMemberCard);
+
+            const baseHTML = `
+            <!DOCTYPE html>
+            <html lang="en">
+
+            <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+                <link rel="stylesheet" href="../assets/style.css" />
+                <title>Team Org Chart</title>
+            </head>
+
+            <body>
+                <Header>
+                    <section class="">
+                        <div class="">
+                            <div>
+                                <div class="col-12 col-md-12">
+                                    <h1>Organisation Chart</h1>
+                                </div>
+                    </section>
+                </Header>
+
+                <main>
+                    <!-- displays team cards -->
+                    <section class="container-fluid">
+                        <div id="cards" class="row justify-content-center">
+                        ${teamMemberCard}
+                        </div>
+                    </section>
+                </Main>
+
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                <script src="./index.html"></script>
+            </body>
+
+            </html>
+            `
+            console.log(baseHTML);
         } else {
             teamComplete = true;
             console.log("team complete")
+            return
         }
     }
 }
