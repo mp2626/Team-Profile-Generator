@@ -6,6 +6,55 @@ const Intern = require("./lib/intern");
 
 let teamComplete = false;
 
+function genBaseHTML() {
+    const baseHTML = `
+            <!DOCTYPE html>
+            <html lang="en">
+
+            <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+                <link rel="stylesheet" href="./assets/style.css" />
+                <title>Team Org Chart</title>
+            </head>
+
+            <body>
+                <Header>
+                    <section class="">
+                        <div class="">
+                            <div>
+                                <div class="col-12 col-md-12">
+                                    <h1>Organisation Chart</h1>
+                                </div>
+                    </section>
+                </Header>
+
+                <main>
+                    <!-- displays team cards -->
+                    <section class="container-fluid">
+                        <div id="cards" class="row justify-content-center">`
+    fs.writeFile('team.html', baseHTML, (err) => {
+        err ? console.log(err) : console.log("based HTML Created");
+    });
+}
+
+function closeHTML() {
+    const closeTeamHTML = `
+    </div>
+    </section>
+        </Main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../index.js"></script>
+    </body>
+</html>`
+    fs.appendFile('team.html', closeTeamHTML, (err) => {
+        err ? console.log(err) : console.log("based HTML Created");
+    });
+}
+
 const commonPrompt = () => {
     return inquirer
         .prompt([
@@ -44,7 +93,7 @@ function concatEmployeeInfo(dataOne, dataTwo) {
     return Object.assign(dataOne, dataTwo);
 }
 
-async function buildTeamArray() {
+async function buildTeam() {
 
     while (teamComplete === false) {
         let choice = await teamMemberPrompt();
@@ -89,88 +138,56 @@ async function buildTeamArray() {
                     const newManager = new Manager(name, id, email, roleInfo);
                     teamMemberCard = `
                     <div class="card col-md-11 col-lg-2">
-                        <h1 class="card-header">${newManager.getRole()} /h1>
-                    < div class="card-body" >
-                        <h2>Name:${newManager.getName()} </h2>
-                        <h2>ID:${newManager.getId()}</h2>
-                        <h2>Email:${newManager.getEmail()}</h2>
+                        <h1 class="card-header"> ${newManager.getRole()} </h1>
+                        <div class="card-body">
+                        <h2>Name: ${newManager.getName()} </h2>
+                        <h2>ID: ${newManager.getId()}</h2>
+                        <h2>Email:<a href = "mailto: ${newManager.getEmail()}"> ${newManager.getEmail()}</a></h2>
                         <h2>Contact Number:${newManager.getOfficeNumber()}</h2>
-                        </div >
+                        </div>
+                        </div>
                     `
                     break
                 case "Engineer":
                     const newEngineer = new Engineer(name, id, email, roleInfo);
                     teamMemberCard = `
                     <div class="card col-md-11 col-lg-2">
-                        <h1 class="card-header">${newEngineer.getRole()} /h1>
-                    < div class="card-body" >
+                        <h1 class="card-header">${newEngineer.getRole()} </h1>
+                        <div class="card-body">
                         <h2>Name:${newEngineer.getName()} </h2>
                         <h2>ID:${newEngineer.getId()}</h2>
-                        <h2>Email:${newEngineer.getEmail()}</h2>
-                        <h2>GitHub Username:${newEngineer.getGitHub()}</h2>
-                        </div >
+                        <h2>Email:<a href = "mailto: ${newEngineer.getEmail()}"> ${newEngineer.getEmail()}</a></h2>
+                        <h2>GitHub Username:<a href ="https://github.com/${newEngineer.getGitHub()}"target = "_blank">${newEngineer.getGitHub()} </a></h2>
+                        </div>
+                        </div>
                     `
                     break
                 case "Intern":
                     const newIntern = new Intern(name, id, email, roleInfo);
                     teamMemberCard = `
                     <div class="card col-md-11 col-lg-2">
-                        <h1 class="card-header">${newIntern.getRole()} /h1>
-                    < div class="card-body" >
+                        <h1 class="card-header">${newIntern.getRole()} </h1>
+                        <div class="card-body"  >
                         <h2>Name:${newIntern.getName()} </h2>
                         <h2>ID:${newIntern.getId()}</h2>
-                        <h2>Email:${newIntern.getEmail()}</h2>
+                        <h2>Email:<a href = "mailto: ${newIntern.getEmail()}"> ${newIntern.getEmail()}</a></h2>
                         <h2>School:${newIntern.getSchool()}</h2>
-                        </div >
+                        </div>
+                        </div>
                     `
                     break
             }
 
             console.log(teamMemberCard);
 
-            const baseHTML = `
-            <!DOCTYPE html>
-            <html lang="en">
+            fs.appendFile('team.html', teamMemberCard, (err) => {
+                err ? console.log(err) : console.log("Team Member Appended")
+            });
 
-            <head>
-                <meta charset="UTF-8">
-                <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-                <link rel="stylesheet" href="../assets/style.css" />
-                <title>Team Org Chart</title>
-            </head>
-
-            <body>
-                <Header>
-                    <section class="">
-                        <div class="">
-                            <div>
-                                <div class="col-12 col-md-12">
-                                    <h1>Organisation Chart</h1>
-                                </div>
-                    </section>
-                </Header>
-
-                <main>
-                    <!-- displays team cards -->
-                    <section class="container-fluid">
-                        <div id="cards" class="row justify-content-center">
-                        ${teamMemberCard}
-                        </div>
-                    </section>
-                </Main>
-
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-                <script src="./index.html"></script>
-            </body>
-
-            </html>
-            `
-            console.log(baseHTML);
         } else {
             teamComplete = true;
             console.log("team complete")
+            closeHTML()
             return
         }
     }
@@ -178,7 +195,8 @@ async function buildTeamArray() {
 
 async function init() {
     try {
-        await buildTeamArray();
+        genBaseHTML();
+        await buildTeam();
     } catch (e) {
         console.log(e);
     }
