@@ -5,8 +5,8 @@ const Manager = require("./lib/manager");
 const Intern = require("./lib/intern");
 
 let teamComplete = false;
-
-function genBaseHTML() {
+// generates the first part of the html file so that the team can be appended later
+function genBase() {
     const baseHTML = `
             <!DOCTYPE html>
             <html lang="en">
@@ -36,10 +36,10 @@ function genBaseHTML() {
                     <section class="container-fluid">
                         <div id="cards" class="row justify-content-center">`
     fs.writeFile('team.html', baseHTML, (err) => {
-        err ? console.log(err) : console.log("based HTML Created");
+        err ? console.log(err) : console.log("Base HTML Created");
     });
 }
-
+// once the team has been append this adds the closing html so the document functions
 function closeHTML() {
     const closeTeamHTML = `
     </div>
@@ -51,10 +51,24 @@ function closeHTML() {
     </body>
 </html>`
     fs.appendFile('team.html', closeTeamHTML, (err) => {
-        err ? console.log(err) : console.log("based HTML Created");
+        err ? console.log(err) : console.log("closing HTML Added");
     });
 }
-
+// err ? console.log(err) : console.log("Team HTML Created")
+// asks the user to select a team member to create, this has be separated to allow the user to 
+// create more that one team with a manager if they wish
+const teamMemberPrompt = () => {
+    return inquirer
+        .prompt([
+            {
+                type: "list",
+                name: "role",
+                message: "Please select a team member type to create, or finalise your team by selecting complete team",
+                choices: ["Manager", "Engineer", "Intern", "Complete Team"]
+            }
+        ])
+}
+// prompts the user to enter team members details that are common over the team
 const commonPrompt = () => {
     return inquirer
         .prompt([
@@ -76,28 +90,17 @@ const commonPrompt = () => {
             },
         ])
 }
-
-const teamMemberPrompt = () => {
-    return inquirer
-        .prompt([
-            {
-                type: "list",
-                name: "role",
-                message: "Please select a team member type to create, or finalise your team by selecting complete team",
-                choices: ["Manager", "Engineer", "Intern", "Complete Team"]
-            }
-        ])
-}
-
+// joins common team details with special details to create one object
 function concatEmployeeInfo(dataOne, dataTwo) {
     return Object.assign(dataOne, dataTwo);
 }
-
+// builds team members and then appends them to the html files, and closes once the team is complete
 async function buildTeam() {
-
     while (teamComplete === false) {
+        // requests user to select a team member
         let choice = await teamMemberPrompt();
         if (choice.role !== "Complete Team") {
+            // gathers common details
             const commonDetails = await commonPrompt()
             let additionalDetails = ""
             switch (choice.role) {
@@ -129,7 +132,7 @@ async function buildTeam() {
                     ])
                     break
             }
-
+            // create one objects then destructures for use later
             const { name, id, email, roleInfo } = concatEmployeeInfo(commonDetails, additionalDetails);
             let teamMemberCard = '';
 
@@ -157,7 +160,7 @@ async function buildTeam() {
                         <h2>Name:${newEngineer.getName()} </h2>
                         <h2>ID:${newEngineer.getId()}</h2>
                         <h2>Email:<a href = "mailto: ${newEngineer.getEmail()}"> ${newEngineer.getEmail()}</a></h2>
-                        <h2>GitHub Username:<a href ="https://github.com/${newEngineer.getGitHub()}"target = "_blank">${newEngineer.getGitHub()} </a></h2>
+                        <h2>GitHub Username:<a href ="https://github.com/${newEngineer.getGitHub()}"target = "_blank"> ${newEngineer.getGitHub()} </a></h2>
                         </div>
                         </div>
                     `
@@ -177,16 +180,14 @@ async function buildTeam() {
                     `
                     break
             }
-
-            console.log(teamMemberCard);
-
+            // appends team member to html
             fs.appendFile('team.html', teamMemberCard, (err) => {
-                err ? console.log(err) : console.log("Team Member Appended")
+                err ? console.log(err) : console.log("Team Member Appended");
             });
-
+            // once the use selects complete team, sets team complete to true to close loop and added closing section to HTML
         } else {
             teamComplete = true;
-            console.log("team complete")
+            console.log("Team Complete")
             closeHTML()
             return
         }
@@ -195,7 +196,7 @@ async function buildTeam() {
 
 async function init() {
     try {
-        genBaseHTML();
+        genBase();
         await buildTeam();
     } catch (e) {
         console.log(e);

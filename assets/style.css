@@ -2,7 +2,7 @@
     --backgound: black;
     --text: grey;
     --hearder: #194991;
-    --orangeCard: rgb(252, 114, 51, 0.6);
+    --orangeCard: rgb(252, 114, 51, 0.9);
     --orangeCardOP: rgb(252, 114, 51, 0);
     --orange:#fc7233;
    }
@@ -19,6 +19,11 @@
     color: var(--text);
     font-size: 5rem;
    }
+
+   a {
+       text-decoration: none !important;
+       color: inherit;
+   }
    
    h2 {
        font-size: 30px;
@@ -31,10 +36,11 @@
    .card {
        background-color: var(--orangeCard);
        border: 1.5px solid var(--orange);
-       color: var(--text);
+       color: whitesmoke;
        margin: 1%;
    }
    
    .card h1 {
        font-size: 35px;
+       color: whitesmoke;
    }
