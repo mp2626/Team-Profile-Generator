@@ -66,9 +66,11 @@ There are tests for each class, employee, engineer, inter and manager.
 
 In order to run the tests, enter 'npm test' in the terminal.
 
-# Link to Git Hub
+# Link to Git Hub and Walk Through Video
 
 https://github.com/mp2626/Team-Profile-Generator
+
+https://drive.google.com/file/d/1LFz9P0liHG-gPIlLY8mwrD-t6Qj9Z-4X/view
 
 # Programming Languages/Packages
  * JavaScript
@@ -80,20 +82,3 @@ https://github.com/mp2626/Team-Profile-Generator
 # Authors
 Contributor - Michael Perrin
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-https://drive.google.com/file/d/13AignF1YGsgUAFgkdpKo0kKpHV83dIdc/view?usp=sharing
